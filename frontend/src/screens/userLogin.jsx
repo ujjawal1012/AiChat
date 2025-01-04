@@ -2,6 +2,7 @@ import React, { useState,useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../config/axios";
 import {UserContext} from "../context/user.context";
+import { toast } from "react-toastify";
 
 const UserLogin = () => {
   const [email, setEmail] = useState("");
@@ -14,11 +15,14 @@ const UserLogin = () => {
     try {
     const res =  await axios.post("/users/login", { email, password });
       console.log("🚀 ~ handleLogin ~ res:", res)
+      toast.success("Login successful");
       localStorage.setItem("token", res.data.token);
-      setUser(res.data.user);
+      // setUser(res.data.user);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
       navigate("/");
     } catch (error) {
       console.log("🚀 ~ handleLogin ~ error:", error);
+      toast.error("Invalid credentials");
     }
     // On successful login, navigate to another page
   };

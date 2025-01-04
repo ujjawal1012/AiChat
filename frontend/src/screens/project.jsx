@@ -9,6 +9,7 @@ import {
   sendMessage,
 } from "../config/socket";
 import { UserContext } from "../context/user.context";
+import { toast } from "react-toastify";
 
 const Project = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,20 +34,26 @@ const Project = () => {
       if (data?.sender?._id === user?._id) return;
       setMessages((prevMessages) => [...prevMessages, data]);
     });
+    getProjectUsers()
+    getAllUsers()
+      
+  }, []);
+
+  const getProjectUsers = async () => {
     axios.get(`/projects/get-project/${id}`).then((res) => {
       console.log("🚀 ~ useEffect ~ ressssss:", res);
       setProjectUsers(res.data.data.users);
     });
-    axios
-      .get("/users/all")
-      .then((res) => {
-        console.log("🚀 ~ useEffect ~ res:", res);
-        setUsers(res.data.users);
-      })
-      .catch((err) => {
-        console.log("🚀 ~ axios.get ~ err:", err);
-      });
-  }, []);
+  }
+
+  const getAllUsers = async () => {
+    axios.get("/users/all").then((res) => {
+      console.log("🚀 ~ useEffect ~ res:", res);
+      setUsers(res.data.users);
+    }).catch((err) => {
+      console.log("🚀 ~ axios.get ~ err:", err);
+    });
+  };
 
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
@@ -74,6 +81,9 @@ const Project = () => {
       projectId: id,
       users: Array.from(selectedUserId),
     });
+    toast.success("Collaborator added successfully");
+    getProjectUsers()
+    // getAllUsers()
     setIsModalOpen(false);
     setSelectedUserId([]);
 
@@ -111,7 +121,7 @@ const Project = () => {
             {messages.map((msg, index) => (
               <div
                 key={index}
-                className={`message max-w-56  flex flex-col p-2 bg-slate-50 rounded-md ${
+                className={`message max-w-56 w-fit  flex flex-col p-2 bg-slate-50 rounded-md ${
                   msg?.sender?._id === user?._id ? "ml-auto" : ""
                 }${msg?.sender?._id === "ai" ? "max-w-[23.5rem]" : ""}`}
               >

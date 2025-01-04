@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../config/axios";
 import { UserContext } from "../context/user.context";
+import { toast } from "react-toastify";
 
 const UserSignup = () => {
   const [email, setEmail] = useState("");
@@ -16,11 +17,13 @@ const UserSignup = () => {
     try {
       const res = await axios.post("/users/register", { email, password });
       console.log("🚀 ~ handleSignup ~ res:", res)
+      toast.success("register successful");
       localStorage.setItem("token", res.data.token);
       setUser(res.data.user);
       navigate("/")
     } catch (error) {
       console.log("🚀 ~ handleSignup ~ error:", error);
+      toast.error("something went wrong");
     }
     // On successful login, navigate to another page
   };

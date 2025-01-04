@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "../config/axios";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/user.context";
+import { toast } from "react-toastify";
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,12 +23,19 @@ const Home = () => {
     try {
       const res = await axios.post("/projects/create", { name: projectName });
       console.log("🚀 ~ createProject ~ res:", res);
+      toast.success("Project created successfully");
+      getAllProjects()
     } catch (error) {
       console.log("🚀 ~ handleLogin ~ error:", error);
+      toast.error("An error occurred while creating the project");
     }
   };
 
   useEffect(() => {
+    getAllProjects()
+  }, []);
+
+  const getAllProjects = ()=>{
     axios
       .get("/projects/all")
       .then((res) => {
@@ -37,7 +45,7 @@ const Home = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }
 
   return (
     <div className="flex min-h-screen  p-4 bg-gray-100">

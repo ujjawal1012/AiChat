@@ -52,7 +52,7 @@ io.use(async (socket, next) => {
 
 io.on("connection", (socket) => {
   console.log("a user connected");
-  socket.join(socket.project._id.toString());
+  socket.join(socket.project?._id.toString());
   socket.on("project-message", async (data) => {
     data.sender = await userModel.findOne({ _id: data.sender }).lean();
 
@@ -65,7 +65,7 @@ io.on("connection", (socket) => {
     if (aiIsMentioned) {
       const prompt = message.replace("@ai", "");
       const result = await generateContent(prompt);
-      io.to(socket.project._id.toString()).emit("project-message", {
+      io.to(socket.project?._id.toString()).emit("project-message", {
         message: result,
         sender: { _id: "ai", email: "ai" },
       });
@@ -75,7 +75,7 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log("user disconnected");
-    socket.leave(socket.project._id.toString());
+    socket.leave(socket.project?._id.toString());
   });
 });
 
