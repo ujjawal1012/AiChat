@@ -34,7 +34,7 @@ jobs:
           npm install
           npm run build
           npm install -g vercel
-          vercel --prod --token $VERCEL_TOKEN
+          vercel --prod --token $VERCEL_TOKEN --yes
 
       # Step 4: Install dependencies and deploy backend
       - name: Deploy Backend
@@ -44,4 +44,4 @@ jobs:
         run: |
           npm install
           npm install -g vercel
-          vercel --prod --token $VERCEL_TOKEN
+          vercel --prod --token $VERCEL_TOKEN --yes
