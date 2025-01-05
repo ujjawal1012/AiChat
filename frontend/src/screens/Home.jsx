@@ -22,7 +22,7 @@ const Home = () => {
 
     try {
       const res = await axios.post("/projects/create", { name: projectName });
-      console.log("🚀 ~ createProject ~ res:", res);
+      console.log("🚀 ~ createProject ~ resS:", res);
       toast.success("Project created successfully");
       getAllProjects()
     } catch (error) {
