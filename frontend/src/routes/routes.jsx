@@ -1,6 +1,6 @@
 import React from "react";
 
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Home from "../screens/Home";
 import UserLogin from "../screens/userLogin";
 import UserSignup from "../screens/userSignup";
@@ -28,6 +28,7 @@ const AppRoutes = () => {
           </UserAuth>
         }
       />
+       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 };

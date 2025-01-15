@@ -17,7 +17,7 @@ const UserLogin = () => {
       console.log("🚀 ~ handleLogin ~ res:", res)
       toast.success("Login successful");
       localStorage.setItem("token", res.data.token);
-      // setUser(res.data.user);
+      setUser(res.data.user);
       localStorage.setItem("user", JSON.stringify(res.data.user));
       navigate("/");
     } catch (error) {
